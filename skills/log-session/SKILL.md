@@ -11,8 +11,8 @@ You have access to the `clockify` MCP server. Use it to file a time entry for th
 
 1. **15-minute increments only.** Allowed durations: `15m`, `30m`, `45m`, `1h`, `1h15m`, `1h30m`, `1h45m`, `2h`. No `20m`, `25m`, `40m`, `50m`. Round to the *nearest* 15.
 2. **Single entry ≤ 2 hours.** Strongly prefer ≤ 1h30m. If the work spans longer, **split into two or more entries** with descriptions that reflect the phase (e.g. "design + scoping", then "implementation + tests"). Do not file a 3h entry as one row.
-3. **Never overlap with an existing entry on the same project.** That's double-billing the same line item — always wrong.
-4. **For any other overlap behaviour** (e.g. whether two different projects, different clients, or parallel work streams may overlap in time), defer to the user's organisation policy if one is recorded in `~/.claude/CLAUDE.md`, project-level `CLAUDE.md`, or the user's memory. If no policy is present, default to *no* overlap and ask the user before filing an entry that overlaps anything.
+3. **Never overlap with an existing entry on the same customer** — whether the existing entry is on the same project or on a different project under the same client, two overlapping entries on one customer means that customer would be double-billed. Always wrong.
+4. **For any other overlap behaviour** (e.g. whether parallel work for *different* customers may overlap in time), defer to the user's organisation policy if one is recorded in `~/.claude/CLAUDE.md`, project-level `CLAUDE.md`, or the user's memory. If no policy is present, default to *no* overlap and ask the user before filing an entry that overlaps anything.
 
 ## Flow
 
@@ -61,7 +61,7 @@ When you see it:
 - Don't log against a project you couldn't match confidently.
 - Don't include a list of files changed in the description.
 - Don't break the 15-min quantum.
-- Don't file an entry that overlaps another on the same project.
+- Don't file an entry that overlaps another on the same customer.
 
 ## Useful tools
 

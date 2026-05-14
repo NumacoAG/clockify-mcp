@@ -8,8 +8,8 @@
     {
       "name": "clockify-mcp",
       "source": {
-        "source": "github",
-        "repo": "NumacoAG/clockify-mcp"
+        "source": "url",
+        "url": "https://github.com/NumacoAG/clockify-mcp.git"
       },
       "description": "Clockify time tracking + proactive nudge + daily calendar reconciliation. Connects to a hosted MCP server; each user authorises with their own Clockify API key.",
       "version": "0.2.0",

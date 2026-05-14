@@ -1,0 +1,90 @@
+[project]
+name = "clockify-mcp"
+version = "0.1.0"
+description = "MCP server for Clockify time tracking — file time entries and query reports from Claude Code or Cowork."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [
+    { name = "Massimiliano Putignano", email = "massimiliano.putignano@numaco.ch" },
+]
+keywords = ["clockify", "mcp", "time-tracking", "claude"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business",
+]
+
+dependencies = [
+    "httpx>=0.27",
+    "mcp>=1.2",
+    "python-dateutil>=2.9",
+    "platformdirs>=4.2",
+    "cryptography>=42",
+    "pyjwt>=2.8",
+    "starlette>=0.37",
+    "uvicorn>=0.30",
+    "python-multipart>=0.0.9",
+]
+
+[project.scripts]
+clockify-mcp = "clockify_mcp.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "respx>=0.21",
+    "ruff>=0.6",
+    "types-python-dateutil>=2.9",
+    "freezegun>=1.5",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",
+    "I",
+    "B",
+    "UP",
+    "SIM",
+    "RUF",
+    "N",
+    "PT",
+    "TID",
+]
+ignore = [
+    "E501",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["N802", "N803"]
+
+[tool.mypy]
+strict = true
+python_version = "3.13"
+files = ["src/clockify_mcp"]
+
+[[tool.mypy.overrides]]
+module = ["dateutil.*"]
+ignore_missing_imports = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra --strict-markers"
+filterwarnings = [
+    # Test fixtures intentionally use short JWT keys; production keys are 32 bytes.
+    "ignore::jwt.warnings.InsecureKeyLengthWarning",
+]

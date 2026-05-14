@@ -1,0 +1,20 @@
+# Copy this file to `~/.config/clockify-mcp/config.toml` (macOS / Linux)
+# or `%APPDATA%\clockify-mcp\config.toml` (Windows).
+# Alternatively, set CLOCKIFY_API_KEY in your shell — env vars win over file values.
+
+# Required: your personal API key.
+# Generate at https://app.clockify.me/user/preferences#advanced
+api_key = "PASTE-YOUR-KEY-HERE"
+
+# Optional. Override only if you're on a regional Clockify shard.
+# Defaults are the global hosts: api.clockify.me / reports.api.clockify.me
+# api_base = "https://euc1.api.clockify.me/api/v1"
+# reports_api_base = "https://euc1.reports.api.clockify.me/v1"
+
+# Optional. Pin a workspace so you don't have to pass workspace_id to every tool.
+# default_workspace_id = "5e0123456789abcdef012345"
+
+# Optional. Overrides the timezone returned by /user.
+# Use an IANA name (e.g. "Europe/Zurich", "America/New_York", "Asia/Tokyo").
+# When unset, the user's profile timezone is used.
+# timezone = "Europe/Zurich"

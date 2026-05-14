@@ -1,0 +1,19 @@
+# Anything not needed inside the image
+.venv
+.git
+.github
+.idea
+.vscode
+.mypy_cache
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+tests
+config.toml
+.env
+.DS_Store
+Dockerfile
+.dockerignore
+docs
+demo

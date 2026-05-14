@@ -1,0 +1,23 @@
+{
+  "name": "clockify-marketplace",
+  "owner": {
+    "name": "Massimiliano Putignano",
+    "email": "massimiliano.putignano@numaco.ch"
+  },
+  "plugins": [
+    {
+      "name": "clockify-mcp",
+      "source": ".",
+      "description": "Clockify time tracking + proactive nudge + daily calendar reconciliation. Connects to a hosted MCP server; each user authorises with their own Clockify API key.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Massimiliano Putignano",
+        "email": "massimiliano.putignano@numaco.ch"
+      },
+      "homepage": "https://github.com/NumacoAG/clockify-mcp",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": ["clockify", "time-tracking", "productivity"]
+    }
+  ]
+}

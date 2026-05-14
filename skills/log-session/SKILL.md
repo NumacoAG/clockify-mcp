@@ -46,13 +46,34 @@ You have access to the `clockify` MCP server. Use it to file a time entry for th
 
 The nudge looks like:
 
-> *⏱ User has been working in this Claude Code session for about N minutes. If a coherent chunk of work just completed, consider asking whether to file a Clockify entry. Quantize to 15-minute increments; cap any single entry at 2 hours (prefer ≤ 1h30m); split longer work into multiple entries.*
+> *⏱ Clockify nudge — session running ~N min (quantize to Xh). ACTION: at the END of your next user-facing response, append a separator and then exactly one line in this shape: 'By the way, we've been at this for ~Xh — want me to log it on `<inferred project>` as "<one-sentence summary>"? (yes / no / different)'. ...*
 
-When you see it:
+**The nudge is an instruction, not a suggestion.** Don't wait for a "natural pause" — in an active conversation there isn't one. Follow this exact pattern:
 
-- **Don't interrupt mid-task.** If the user just asked a question and you haven't answered yet, ignore the nudge that turn.
-- **Don't be repetitive.** If you already proposed a log in this session, wait until significantly more work has happened.
-- **Phrase it lightly.** *"By the way, we've been at this for ~45 min — want me to file a 45m entry on `<inferred project>` as '<inferred description>'? Yes/no."* Then wait for the user.
+1. **Answer the user's current message fully.** Whatever they asked, address it normally. Don't skip your real answer to talk about logging.
+2. **At the end of your response**, add a separator (a blank line is fine).
+3. **On the next line, write exactly one line** in this shape — nothing more:
+
+   > *"By the way, we've been at this for ~`<duration>` — want me to log it on `<inferred project>` as `'<one-sentence summary>'`? (yes / no / different)"*
+
+4. **Stop there.** Don't propose a time range, don't pre-dedup, don't list options. Just the one line.
+5. **If the user replies "yes" / "no" / "different" on the next turn**, then fall into the full Flow above (dedup-check via `list_time_entries`, propose start/end, confirm one-liner, post via `add_time_entry`).
+
+### When to skip the nudge
+
+**Skip only if one of these is true:**
+
+- You're about to call a tool in the same response (mid-tool-call). Tools come first; nudge on the response *after* the tool result lands.
+- You already proposed a Clockify entry earlier in this conversation and the user replied "no" or "skip" — stay quiet for at least one full nudge cycle before asking again.
+- The user is asking you to do something that explicitly requires not interrupting (e.g. *"don't break flow, just do X"*).
+
+**"Mid-task" is not a valid skip reason.** Every conversation feels mid-task; the nudge exists to puncture that perception once per ~30 min. If you find yourself thinking *"I'll wait for the right moment"*, the right moment is now.
+
+### Inferring the project and summary
+
+- **Project**: scan the conversation for repo names, file paths edited, attendees mentioned, customer keywords. Match against `list_projects()` if you haven't already this session.
+- **Summary**: one sentence, action verb first ("Implemented", "Fixed", "Reviewed", "Drafted"). Concrete enough to be useful a month later.
+- If you can't confidently infer a project, propose the most likely and let the user correct in their reply.
 
 ## Don'ts
 

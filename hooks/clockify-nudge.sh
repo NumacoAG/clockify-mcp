@@ -86,7 +86,7 @@ else
   DURATION_HUMAN="${HOURS}h${MINS}m"
 fi
 
-MESSAGE="⏱ Clockify nudge: this Claude Code session has been running for about ${ELAPSED_SINCE_START_MIN} min (quantized: ${DURATION_HUMAN}). If a coherent chunk of work just completed, consider asking the user whether to file a Clockify entry. Follow the /log-session skill rules: 15-min increments only (15m, 30m, 45m, 1h, 1h15m, 1h30m, 1h45m, 2h); single entry ≤ 2h (prefer ≤ 1h30m); split longer work into chunks; never double-book the same customer. Don't interrupt mid-task; if you already proposed a log this session, stay quiet."
+MESSAGE="⏱ Clockify nudge — session running ~${ELAPSED_SINCE_START_MIN} min (quantize to ${DURATION_HUMAN}). ACTION: at the END of your next user-facing response, append a separator (blank line or ---) and then exactly one line in this shape: 'By the way, we've been at this for ~${DURATION_HUMAN} — want me to log it on <inferred project from this conversation> as \"<one-sentence summary of what we did>\"? (yes / no / different)'. This is an instruction, not a suggestion: append it after you've answered the user's current message, do not skip it because the work isn't 'finished'. Skip ONLY if (a) you're about to call a tool in the same response (mid-tool-call), or (b) you already proposed a Clockify entry earlier in this conversation. Quantize to 15-min steps (15m, 30m, 45m, 1h, 1h15m, 1h30m, 1h45m, 2h); cap at 2h; never double-book the same customer. If the user replies yes/no/different on the next turn, fall into the full /log-session flow (dedup check, post, confirm)."
 
 # Emit the system reminder. The harness reads `additionalContext` from
 # `hookSpecificOutput` and injects it into Claude's context.

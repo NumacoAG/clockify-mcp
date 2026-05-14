@@ -49,6 +49,8 @@ You have access to the `clockify` MCP and the Outlook (Microsoft 365) MCP. Cross
 
 9. **Post via `add_time_entry`** — one parallel batch. Show IDs after.
 
+10. **Lazy mapping-sync note.** After the post step, compare the projects you ended up using against the user's CLAUDE.md cheat-sheet. If any project is in Clockify but absent from the cheat-sheet (or no cheat-sheet exists), add a single one-liner at the end of your response: *"FYI: {N} Clockify project(s) without a mapping rule. Run `/clockify-sync-mappings` to add rules."* Never modify the user's CLAUDE.md from this skill — `/clockify-sync-mappings` owns that and always asks before writing.
+
 ## When the scheduled daily sweep invokes you
 
 The agent prompt asks you to scan **yesterday** and **today** and either:

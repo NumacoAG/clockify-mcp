@@ -26,6 +26,7 @@ You have access to the `clockify` MCP server. Use it to file a time entry for th
    - Match by file paths edited, repo name, topic, attendees mentioned in the conversation.
    - If two projects could fit, propose the most likely and ask.
    - Do not log against a project you can't match confidently.
+   - **Lazy mapping-sync note**: if the project you chose isn't in the user's CLAUDE.md cheat-sheet (or there's no cheat-sheet at all), add a single one-liner to the *end* of your final response: *"FYI: '`<project>`' wasn't in your CLAUDE.md cheat-sheet. Run `/clockify-sync-mappings` to add a rule for it."* Do not interrupt the flow, do not edit the user's CLAUDE.md from this skill — that's `/clockify-sync-mappings`'s job, and it always asks before writing.
 
 3. **Write a 1-sentence description.** Concrete, timesheet-readable a month from now. ✅ "Refactored the auth middleware and added two regression tests". ❌ "worked on stuff" / "coded".
 

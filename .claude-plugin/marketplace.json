@@ -11,8 +11,8 @@
         "source": "url",
         "url": "https://github.com/NumacoAG/clockify-mcp.git"
       },
-      "description": "[v0.2.3] Clockify time tracking + proactive nudge + daily calendar reconciliation. Connects to a hosted MCP server; each user authorises with their own Clockify API key.",
-      "version": "0.2.3",
+      "description": "[v0.3.0] Clockify time tracking + proactive nudge + daily calendar reconciliation. MCP server + Stop hook + skills + slash commands all wired. Each user authorises with their own Clockify API key.",
+      "version": "0.3.0",
       "author": {
         "name": "Massimiliano Putignano",
         "email": "massimiliano.putignano@numaco.ch"

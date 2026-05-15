@@ -51,7 +51,11 @@ class AuthConfig:
     signing_key: str
     encryption_key: str
     issuer: str
-    access_token_ttl: int = 24 * 3600
+    # 6 months — long enough that users authorise once per half-year, not per
+    # session. The Clockify API key embedded inside the JWT never expires
+    # server-side, so this is purely our wrapper's freshness window. Rotate
+    # JWT_SIGNING_KEY to revoke every issued token at once if needed.
+    access_token_ttl: int = 180 * 24 * 3600
     auth_code_ttl: int = 120
 
     @classmethod

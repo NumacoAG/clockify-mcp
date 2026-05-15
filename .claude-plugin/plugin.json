@@ -1,6 +1,6 @@
 {
   "name": "clockify-mcp",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Clockify time tracking for Claude Code: file entries via the hosted MCP server, get periodically nudged when you forget to log, and scan your Outlook calendar daily for un-logged meetings.",
   "author": {
     "name": "Massimiliano Putignano",

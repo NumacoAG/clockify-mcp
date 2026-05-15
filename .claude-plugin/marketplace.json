@@ -11,8 +11,8 @@
         "source": "url",
         "url": "https://github.com/NumacoAG/clockify-mcp.git"
       },
-      "description": "[v0.5.1] Clockify time tracking + assertive 20-min nudge (mid-tool-call loophole removed) + macOS desktop notification on each nudge + daily calendar reconciliation + auto-evolving project-mapping cheat-sheet. Universal rule: never double-books the same customer.",
-      "version": "0.5.1",
+      "description": "[v0.5.2] Clockify time tracking + assertive 20-min nudge (with macOS desktop notification) + daily calendar reconciliation + auto-evolving project-mapping cheat-sheet. Universal rules: quarter-hour-aligned starts, 15-min quantum, never double-books the same customer.",
+      "version": "0.5.2",
       "author": {
         "name": "Massimiliano Putignano",
         "email": "massimiliano.putignano@numaco.ch"

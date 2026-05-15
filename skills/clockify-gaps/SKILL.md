@@ -10,13 +10,14 @@ You have access to the `clockify` MCP and the Outlook (Microsoft 365) MCP. Cross
 ## Universal rules (binding — same as `log-session`)
 
 1. **15-minute increments only.** `15m`, `30m`, `45m`, `1h`, `1h15m`, `1h30m`, `1h45m`, `2h`. Round to the nearest 15.
-2. **Single entry ≤ 2 h.** Prefer ≤ 1h30m. If a calendar event ran > 2 h, split into chunks with descriptions reflecting each phase.
-3. **Never overlap with an existing entry on the same customer** — whether on the same project or a different project under the same client. That's double-billing the customer, always wrong.
-4. **For any other overlap behaviour** (e.g. parallel work for *different* customers), defer to the user's organisation policy if one is recorded in `~/.claude/CLAUDE.md`, project-level `CLAUDE.md`, or memory. If no policy is present, default to *no* overlap and ask the user before proposing an entry that would overlap anything.
-5. **Cancelled meetings → skip** (`isCancelled: true`).
-6. **All-day events → skip** unless the user confirms they were full work days on a single project.
-7. **`free` showAs → skip** (the user wasn't actually busy).
-8. **Internal company syncs → skip by default** (all-hands, ops syncs, sales syncs, 1:1s with the user's own team). The user can include them on request. If their CLAUDE.md/memory lists specific internal-only meeting patterns to skip, honour that.
+2. **Start times on the quarter hour.** Entry `start` and `end` must land on `HH:00`, `HH:15`, `HH:30`, or `HH:45`. For calendar events with non-aligned start times (a 14:33 standup), snap the proposed entry's start *backwards* to the previous quarter hour and adjust end accordingly.
+3. **Single entry ≤ 2 h.** Prefer ≤ 1h30m. If a calendar event ran > 2 h, split into chunks with descriptions reflecting each phase.
+4. **Never overlap with an existing entry on the same customer** — whether on the same project or a different project under the same client. That's double-billing the customer, always wrong.
+5. **For any other overlap behaviour** (e.g. parallel work for *different* customers), defer to the user's organisation policy if one is recorded in `~/.claude/CLAUDE.md`, project-level `CLAUDE.md`, or memory. If no policy is present, default to *no* overlap and ask the user before proposing an entry that would overlap anything.
+6. **Cancelled meetings → skip** (`isCancelled: true`).
+7. **All-day events → skip** unless the user confirms they were full work days on a single project.
+8. **`free` showAs → skip** (the user wasn't actually busy).
+9. **Internal company syncs → skip by default** (all-hands, ops syncs, sales syncs, 1:1s with the user's own team). The user can include them on request. If their CLAUDE.md/memory lists specific internal-only meeting patterns to skip, honour that.
 
 ## Flow
 

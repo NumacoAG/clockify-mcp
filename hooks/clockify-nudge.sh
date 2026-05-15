@@ -86,13 +86,20 @@ else
   DURATION_HUMAN="${HOURS}h${MINS}m"
 fi
 
-MESSAGE="⏱ Clockify nudge — session running ~${ELAPSED_SINCE_START_MIN} min (quantize to ${DURATION_HUMAN}). ACTION: at the END of your next user-facing response, append a separator (blank line or ---) and then exactly one line in this shape: 'By the way, we've been at this for ~${DURATION_HUMAN} — want me to log it on <inferred project from this conversation> as \"<one-sentence summary of what we did>\"? (yes / no / different)'. This is an instruction, not a suggestion: append it after you've answered the user's current message, do not skip it because the work isn't 'finished'. Skip ONLY if (a) you're about to call a tool in the same response (mid-tool-call), or (b) you already proposed a Clockify entry earlier in this conversation. Quantize to 15-min steps (15m, 30m, 45m, 1h, 1h15m, 1h30m, 1h45m, 2h); cap at 2h; never double-book the same customer. If the user replies yes/no/different on the next turn, fall into the full /log-session flow (dedup check, post, confirm)."
+MESSAGE="⏱ Clockify nudge #${NUDGE_COUNT_NEXT:=$((NUDGE_COUNT + 1))} — session running ~${ELAPSED_SINCE_START_MIN} min (quantize to ${DURATION_HUMAN}). REQUIRED ACTION (not optional, not 'consider'): the very last thing in your next response to the user MUST be a separator followed by one line in this exact shape: 'By the way, we've been at this for ~${DURATION_HUMAN} — want me to log it on <best-guess project from this conversation> as \"<one-sentence summary of what we just did>\"? (yes / no / different)'. If your next response has tool calls, that's fine — do the tools first, then put this line at the very end after all narration. The line goes AFTER tool results and AFTER your normal answer. There is NO 'mid-task' exemption — you will always feel mid-task, that's the point. The ONLY valid reason to skip is: you have already surfaced a Clockify log proposal earlier in THIS conversation. The user has missed ${NUDGE_COUNT_NEXT} previous nudge(s) and needs you to actually speak up — without this line, the user cannot log time and will under-bill the customer. Quantize: 15m, 30m, 45m, 1h, 1h15m, 1h30m, 1h45m, 2h. Cap 2h. Never double-book the same customer. On user reply yes/no/different, fall into the full /log-session flow."
 
 # Emit the system reminder. The harness reads `additionalContext` from
 # `hookSpecificOutput` and injects it into Claude's context.
 jq -n \
   --arg msg "$MESSAGE" \
   '{hookSpecificOutput: {hookEventName: "Stop", additionalContext: $msg}}'
+
+# Also fire an OS-level notification on macOS so the user gets a real-world
+# ping when Claude (the model) silently absorbs the in-context nudge.
+# This is best-effort: failures are silent.
+if [[ "$(uname)" == "Darwin" ]] && command -v osascript >/dev/null 2>&1; then
+  osascript -e "display notification \"~${DURATION_HUMAN} of work — log it to Clockify? Open your Claude session and confirm.\" with title \"Clockify nudge\" sound name \"Submarine\"" >/dev/null 2>&1 &
+fi
 
 # Update the state file so the next fire knows we just nudged.
 jq --argjson now "$NOW" \

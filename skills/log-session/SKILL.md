@@ -61,13 +61,13 @@ The nudge looks like:
 
 ### When to skip the nudge
 
-**Skip only if one of these is true:**
+**The only valid skip:** you've already surfaced a Clockify log proposal earlier in THIS conversation.
 
-- You're about to call a tool in the same response (mid-tool-call). Tools come first; nudge on the response *after* the tool result lands.
-- You already proposed a Clockify entry earlier in this conversation and the user replied "no" or "skip" — stay quiet for at least one full nudge cycle before asking again.
-- The user is asking you to do something that explicitly requires not interrupting (e.g. *"don't break flow, just do X"*).
+**Tool calls are NOT a skip reason.** If your response has tool calls, do them first, then put the proposal line at the very end of the same response, after all narration. The model is allowed to interleave text and tool calls in one turn — use that. Tool calls and the trailing proposal line co-exist in the same response.
 
-**"Mid-task" is not a valid skip reason.** Every conversation feels mid-task; the nudge exists to puncture that perception once per ~30 min. If you find yourself thinking *"I'll wait for the right moment"*, the right moment is now.
+**"Mid-task" is NOT a valid skip reason.** Every conversation feels mid-task — the user has always just asked for the next thing. The nudge exists precisely to puncture that perception. If you find yourself thinking *"I'll wait for the right moment"*, the right moment is now, and you must surface this turn.
+
+**Sub-agent context** (you're invoked by another agent and your output goes back to a parent, not the user) is a valid skip — there's no user to read the proposal.
 
 ### Inferring the project and summary
 

@@ -1,0 +1,44 @@
+name: Keep Cloud Run warm
+
+# Hits the public Cloud Run /health endpoint every 10 minutes so the
+# container never scales to zero. Without this, ~15 min of inactivity
+# triggers a cold start on the next request, which has been observed to
+# wedge the long-lived MCP streamable-HTTP transport on the client side.
+#
+# Free on public repos (no GitHub Actions minutes are charged); the
+# resulting traffic is ~4,320 requests/month, well inside Cloud Run's
+# 2,000,000-request free tier.
+#
+# Manual fire: Actions tab → "Keep Cloud Run warm" → Run workflow.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping /health
+        run: |
+          set -euo pipefail
+          URL="${PUBLIC_URL:-https://clockify-mcp-tyqate6bsa-ew.a.run.app}/health"
+          echo "Pinging $URL ..."
+          for attempt in 1 2 3; do
+            if curl -fsS --max-time 30 "$URL"; then
+              echo
+              echo "✓ awake (attempt $attempt)"
+              exit 0
+            fi
+            echo "  attempt $attempt failed; retrying in 10s..."
+            sleep 10
+          done
+          echo "✗ all attempts failed"
+          exit 1
+        env:
+          PUBLIC_URL: https://clockify-mcp-tyqate6bsa-ew.a.run.app

@@ -11,8 +11,8 @@
         "source": "url",
         "url": "https://github.com/NumacoAG/clockify-mcp.git"
       },
-      "description": "[v0.7.1] Clockify time tracking — 6-month JWT TTL + always-warm Cloud Run + in-thread nudge on user prompt submission (no OS notifications) with active-time accounting (THINK/TYPE capped at 7 min, GENERATE always counted, counter resets to zero when an entry is filed) + topic-aware snooze (decline once and the model goes quiet until the conversation shifts to billable work) + daily calendar reconciliation + auto-evolving project mappings. Universal rules: quarter-hour-aligned starts, 15-min quantum, 2 h cap enforced in-script, never double-books the same customer.",
-      "version": "0.7.1",
+      "description": "[v0.8.0] Clockify time tracking: 6-month JWT TTL + always-warm Cloud Run + daily calendar reconciliation + auto-evolving project mappings. Universal rules: quarter-hour-aligned starts, 15-min quantum, 2 h cap, never double-books the same customer.",
+      "version": "0.8.0",
       "author": {
         "name": "Massimiliano Putignano",
         "email": "massimiliano.putignano@numaco.ch"

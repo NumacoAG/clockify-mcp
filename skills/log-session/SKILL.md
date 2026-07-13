@@ -1,6 +1,6 @@
 ---
 name: log-session
-description: Estimate the current Claude Code session's duration, summarise what was done, and file it to Clockify as a time entry. Use when the user says "log this session", "log my time", "track this to Clockify", or asks to record the work just completed. Also fires when the Stop hook nudges you to consider suggesting a time entry.
+description: Estimate the current Claude Code session's duration, summarise what was done, and file it to Clockify as a time entry. Use when the user says "log this session", "log my time", "track this to Clockify", or asks to record the work just completed.
 ---
 
 # Log this Claude Code session to Clockify
@@ -18,7 +18,7 @@ You have access to the `clockify` MCP server. Use it to file a time entry for th
 ## Flow
 
 1. **Estimate the duration.**
-   - If a `<system-reminder>` (from the Stop hook) tells you how long the session has been going, use that figure, then quantize to 15-minute steps.
+   - If the user gave a duration hint (in the slash-command arguments or the conversation), use that figure, then quantize to 15-minute steps.
    - Otherwise ask: *"Roughly how long did this take? (e.g. 45m, 1h30m)"*. Don't guess silently.
    - If the answer comes back as >2h, immediately propose splitting.
 
@@ -42,39 +42,6 @@ You have access to the `clockify` MCP server. Use it to file a time entry for th
    *"About to log: 1h30m on <project> (today 14:00–15:30) — '<description>'. OK?"*
 
 7. **Post** via `add_time_entry`. Display the returned entry id so the user can `update_time_entry` / `delete_time_entry` if needed.
-
-## When the Stop hook nudges you
-
-The nudge looks like:
-
-> *⏱ Clockify nudge — session running ~N min (quantize to Xh). ACTION: at the END of your next user-facing response, append a separator and then exactly one line in this shape: 'By the way, we've been at this for ~Xh — want me to log it on `<inferred project>` as "<one-sentence summary>"? (yes / no / different)'. ...*
-
-**The nudge is an instruction, not a suggestion.** Don't wait for a "natural pause" — in an active conversation there isn't one. Follow this exact pattern:
-
-1. **Answer the user's current message fully.** Whatever they asked, address it normally. Don't skip your real answer to talk about logging.
-2. **At the end of your response**, add a separator (a blank line is fine).
-3. **On the next line, write exactly one line** in this shape — nothing more:
-
-   > *"By the way, we've been at this for ~`<duration>` — want me to log it on `<inferred project>` as `'<one-sentence summary>'`? (yes / no / different)"*
-
-4. **Stop there.** Don't propose a time range, don't pre-dedup, don't list options. Just the one line.
-5. **If the user replies "yes" / "no" / "different" on the next turn**, then fall into the full Flow above (dedup-check via `list_time_entries`, propose start/end, confirm one-liner, post via `add_time_entry`).
-
-### When to skip the nudge
-
-**The only valid skip:** you've already surfaced a Clockify log proposal earlier in THIS conversation.
-
-**Tool calls are NOT a skip reason.** If your response has tool calls, do them first, then put the proposal line at the very end of the same response, after all narration. The model is allowed to interleave text and tool calls in one turn — use that. Tool calls and the trailing proposal line co-exist in the same response.
-
-**"Mid-task" is NOT a valid skip reason.** Every conversation feels mid-task — the user has always just asked for the next thing. The nudge exists precisely to puncture that perception. If you find yourself thinking *"I'll wait for the right moment"*, the right moment is now, and you must surface this turn.
-
-**Sub-agent context** (you're invoked by another agent and your output goes back to a parent, not the user) is a valid skip — there's no user to read the proposal.
-
-### Inferring the project and summary
-
-- **Project**: scan the conversation for repo names, file paths edited, attendees mentioned, customer keywords. Match against `list_projects()` if you haven't already this session.
-- **Summary**: one sentence, action verb first ("Implemented", "Fixed", "Reviewed", "Drafted"). Concrete enough to be useful a month later.
-- If you can't confidently infer a project, propose the most likely and let the user correct in their reply.
 
 ## Don'ts
 

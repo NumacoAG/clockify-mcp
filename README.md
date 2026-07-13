@@ -121,7 +121,7 @@ Push this repo to GitHub. Colleagues then, in the Claude desktop app:
 2. Open the new marketplace, click **Install** on `clockify-mcp`.
 3. First time they ask Claude something Clockify-related, they'll be redirected to a Connect Clockify form — paste their personal Clockify API key (Clockify → Preferences → Advanced → Generate). Their key stays encrypted inside their own JWT; the hosted server doesn't store it.
 
-That's it — connector, skills, hook, and slash commands are all wired up by the install.
+That's it — connector, skills, and slash commands are all wired up by the install.
 
 ## Tool reference
 
